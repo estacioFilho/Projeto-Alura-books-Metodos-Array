@@ -23,7 +23,7 @@ async function getLivrosDaAPI() {
         listaLivros.innerHTML = `<p>Nenhum livro encontrado, Erro: ${e}.`
     }
 }
-
+//Função responsável por percorrer e adcionar elementos HTML
 function showLivros(lista) {
     listaLivros.innerHTML = ``;
     descontoLivrosDisponiveis.style.display = "none";
@@ -42,6 +42,7 @@ function showLivros(lista) {
     });
 }
 
+//Função aplica desconto usando map e spread Operator
 function aplicarDesconto(lista) {
     const desconto = 0.15;
     livrosComDesconto = lista.map((item) => {
@@ -50,12 +51,12 @@ function aplicarDesconto(lista) {
     return livrosComDesconto;
 }
 
+//Adicionando ao evento duas filtragens e um acumulador de preço total
 botoes.forEach( botao => botao.addEventListener('click', filtrarLivros))
-
 function filtrarLivros(){
     const atributoBotao  = document.getElementById(this.id);
     const categoria = atributoBotao.value;
-    const livrosFiltrados = categoria == 'disponiveis'? disponibilidadeLivros() : livros.filter(livro => livro.categoria == categoria);
+    const livrosFiltrados = categoria == 'disponiveis'? disponibilidadeLivros() : filtrandoPorCategoria(categoria);
     showLivros(livrosFiltrados);
     if(categoria == 'disponiveis'){
         let valorTotalLivrosDisponiveis = disponibilidadeLivros().reduce((acc, livro) => acc + livro.preco, 0).toFixed(2);
@@ -65,6 +66,9 @@ function filtrarLivros(){
 }
 
 botaoOrdenarPreco.addEventListener('click', ordenarPrecos);
+function filtrandoPorCategoria(categoria) {
+    return livros.filter(livro => livro.categoria == categoria);
+}
 
 function disponibilidadeLivros() {
     return livros.filter(livro => livro.quantidade > 0);
